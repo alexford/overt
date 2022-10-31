@@ -32,4 +32,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "thor"
   spec.add_dependency "formatador"
   spec.add_dependency "tilt"
+  spec.add_dependency "kramdown"
 end
