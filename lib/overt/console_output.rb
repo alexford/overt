@@ -1,23 +1,25 @@
+# frozen_string_literal: true
+
 module Overt
   class ConsoleOutput
     def f
       @f ||= Formatador.new
     end
-    
-    def quiet(q = true)
-      @quiet = q
+
+    def quiet
+      @quiet = true
     end
-    
+
     def line(string)
-      if !@quiet then f.display_line(string) end
+      f.display_line(string) unless @quiet
     end
-    
+
     def reline(string)
-      if !@quiet then f.redisplay(string) end
+      f.redisplay(string) unless @quiet
     end
 
     def table(*args)
-      if !@quiet then f.display_table(*args) end
+      f.display_table(*args) unless @quiet
     end
   end
 end

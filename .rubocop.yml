@@ -1,0 +1,18 @@
+AllCops:
+  Exclude:
+    - "bin/**/*"
+    - "overt.gemspec"
+
+Metrics/BlockLength:
+  Exclude:
+    - "test/**/*"
+
+Style/StringLiterals:
+  Enabled: false
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+  IndentationWidth: 2
+
+Style/Documentation:
+  Enabled: false
