@@ -21,12 +21,12 @@ module Overt
   end
   
   # TODO: lots of refactoring
-  def self.build(f)
+  def self.build(console:)
     context = Context.new
 
-    source_pathnames.each do |source_pathname|
+    source_pathnames.each_with_index do |source_pathname, i|
       build_pathname = build_pathname_for_source(source_pathname)
-      f.display_line "+ building #{source_pathname} to #{build_pathname}"
+      console.line "+ building (#{i+1}/#{source_pathnames.length}): #{source_pathname} to #{build_pathname}"
   
       build_pathname.dirname.mkpath
       

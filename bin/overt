@@ -6,41 +6,43 @@ require "thor"
 require "formatador"
 require "pry"
 
-
 class OvertCommand < Thor  
-  include Overt::ConsoleOutput
-  
   def self.exit_on_failure?
     true
   end
 
   desc "clean", "Remove all files in OVERT_BUILD_DIR"
+  method_options :quiet => :boolean
   def clean
+    console.quiet(true) if options[:quiet]
     print_command_header('clean')
     
     do_clean
   end
   
   desc "build", "Build the site, outputs to OVERT_BUILD_DIR"
-  method_options :clean => :boolean
+  method_options :clean => :boolean, :quiet => :boolean
   def build
+    console.quiet(true) if options[:quiet]
     print_command_header('build')
-  
-    f.display_table(Overt::Config.map { |k,v| 
-      {
-        config: k,
-        value: Overt::Config[k]
-      }
-    })
-    f.display_line("")
+
+    console.line("source_dir: [bold]#{Overt::Config[:source_dir]}[/]")
+    console.line("build_dir: [bold]#{Overt::Config[:build_dir]}[/]")
+    console.line("")
     
     if options[:clean]
       do_clean
     end
     
-    results = Overt.build(f)
-    f.display_line("")
-    f.display_line("[green][bold]Built #{results.length} files[/]")
+    
+    start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    results = Overt.build(console: console)
+    end_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    elapsed = ((end_time - start_time) * 1000).round(0)
+    
+    
+    console.line('')
+    console.line("[green][bold]Built #{results.length} files[/] [green]in #{elapsed}ms[/]")
   end
   
   desc "v", "Prints version number"
@@ -50,17 +52,22 @@ class OvertCommand < Thor
   
   private
   
+  def console
+    @console ||= Overt::ConsoleOutput.new
+  end
+  
   def do_clean
-    f.display_line("[bold][red]Cleaning ./#{Pathname.new(Overt::Config[:build_dir])}[/]")
-    f.display_line("")
+    console.line("[bold][red]Cleaning ./#{Pathname.new(Overt::Config[:build_dir])}[/]")
+    console.line("")
+
     Overt.clean
   end
   
   def print_command_header(command)
-    f.display_line("")
-    f.display_line("👀 [bold][light_blue]overt #{command}[/] #{Overt::VERSION}")
-    f.display_line("[light_black]------[/]")
-    f.display_line("")
+    console.line("")
+    console.line("👀 [bold][light_blue]overt #{command}[/] #{Overt::VERSION}")
+    console.line("[light_black]------[/]")
+    console.line("")
   end
   
 end
