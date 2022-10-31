@@ -2,6 +2,7 @@
 
 require 'overt/version'
 require 'overt/context'
+require 'overt/page'
 require 'overt/console_output'
 require 'overt/errors'
 require 'tilt'
@@ -26,11 +27,10 @@ module Overt
 
     source_pathnames.each_with_index do |source_pathname, i|
       build_pathname = build_pathname_for_source(source_pathname)
-      console.line "+ building (#{i + 1}/#{source_pathnames.length}): #{source_pathname} to #{build_pathname}"
+      console.line "+ writing (#{i + 1}/#{source_pathnames.length}): #{source_pathname} as #{build_pathname}"
 
-      build_pathname.dirname.mkpath
-
-      render_file(source_pathname, build_pathname, layout_template, context)
+      page = Page.new(source_pathname, layout_template, context)
+      write_page!(page, build_pathname)
     end
   end
 
@@ -46,9 +46,10 @@ module Overt
     end
   end
 
-  def self.render_file(source, output, layout, context)
-    File.open output, 'w' do |file|
-      file.write layout.render(context) { Tilt.new(source).render(context) }
+  def self.write_page!(page, output_file)
+    output_file.dirname.mkpath
+    File.open output_file, 'w' do |file|
+      file.write page.html
     end
   end
 
@@ -58,16 +59,12 @@ module Overt
 
   def self.build_pathname_for_source(source_pathname, extension = '.html')
     file_name = File.basename(source_pathname, File.extname(source_pathname)) + extension
-    build_path = build_file(source_pathname.relative_path_from(CONFIG[:source_dir]).dirname)
+    build_path = build_file_path(source_pathname.relative_path_from(CONFIG[:source_dir]).dirname)
 
     Pathname.new(File.join(build_path, file_name))
   end
 
-  def self.source_file(name)
-    File.join(CONFIG[:source_dir], name)
-  end
-
-  def self.build_file(name)
+  def self.build_file_path(name)
     File.join(CONFIG[:build_dir], name)
   end
 

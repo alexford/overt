@@ -15,7 +15,7 @@ class OvertCommand < Thor
   desc 'clean', 'Remove all files in OVERT_BUILD_DIR'
   method_options quiet: :boolean
   def clean
-    console.quiet(true) if options[:quiet]
+    console.quiet! if options[:quiet]
     print_command_header('clean')
 
     do_clean
@@ -24,7 +24,7 @@ class OvertCommand < Thor
   desc 'build', 'Build the site, outputs to OVERT_BUILD_DIR'
   method_options clean: :boolean, quiet: :boolean
   def build
-    console.quiet(true) if options[:quiet]
+    console.quiet! if options[:quiet]
     print_command_header('build')
 
     console.line("source_dir: [bold]#{Overt::CONFIG[:source_dir]}[/]")

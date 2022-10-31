@@ -6,7 +6,7 @@ module Overt
       @f ||= Formatador.new
     end
 
-    def quiet
+    def quiet!
       @quiet = true
     end
 
