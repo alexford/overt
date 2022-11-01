@@ -48,9 +48,7 @@ module Overt
 
   def self.write_page!(page, output_file)
     output_file.dirname.mkpath
-    File.open output_file, 'w' do |file|
-      file.write page.html
-    end
+    File.write(output_file, page.html)
   end
 
   def self.source_pathnames

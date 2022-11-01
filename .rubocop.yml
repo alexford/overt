@@ -1,7 +1,12 @@
+require:
+  - rubocop-minitest
+  - rubocop-rake
+
 AllCops:
   Exclude:
     - "bin/**/*"
     - "overt.gemspec"
+  NewCops: enable
 
 Metrics/BlockLength:
   Exclude:
