@@ -4,33 +4,50 @@ require "test_helper"
 
 describe Overt::Page do
   before do
-    @layout = Tilt::ERBTemplate.new { "<html><body><title>Layout!</title><%= yield %></body></html>" }
+    @site = Overt::Site.new('test/fixtures/source_dir')
+    @layout = Tilt::ERBTemplate.new('test/fixtures/source_dir/_layout.erb')
   end
 
   describe '#html' do
     it "returns the rendered template passed as filename, with layout" do
-      page = Overt::Page.new("test/fixtures/page.erb", @layout)
+      page = Overt::Page.new(@site, fixtured_page_template("page.erb"), @layout)
 
       assert_equal(
-        "<html><body><title>Layout!</title><strong>Hello from the page template!</strong>\n\n2</body></html>", page.html
+        "<html><title>Layout!</title><body><strong>Hello from the page template!</strong>\n\n2</body></html>\n",
+        page.html
       )
     end
 
-    it "renders the template with an Overt::Context as the context if no context is given" do
-      page = Overt::Page.new("test/fixtures/page_needing_context.erb", @layout)
+    it "renders the template with an Overt::Context for the page" do
+      page = Overt::Page.new(@site, fixtured_page_template("page_needing_context.erb"), @layout)
 
+      assert_instance_of Overt::Context, page.context
       assert_match Overt::VERSION, page.html
     end
 
-    it "renders the template with given object as the context" do
-      context = Object.new
-      context.define_singleton_method(:overt_version) do
-        "Foo version!"
+    describe "shared content (meta hash)" do
+      it "is available to the layout template when set in the page template" do
+        page = Overt::Page.new(@site, fixtured_page_template("page_with_meta_content.erb"), @layout)
+        html = page.html
+
+        assert_equal("Title from page template!", page.context.meta[:title])
+        assert_match("<title>Title from page template!</title>", html)
       end
+    end
+  end
 
-      page = Overt::Page.new("test/fixtures/page_needing_context.erb", @layout, context)
+  describe '#relative_build_pathname' do
+    it "is the path/filename for the page relative to the build_dir" do
+      page = Overt::Page.new(@site, fixtured_page_template("/subdirectory/subpage.erb"), @layout)
+      assert_equal('subdirectory/subpage.html', page.relative_build_pathname.to_s)
+    end
+  end
 
-      assert_match "Foo version!", page.html
+
+  describe '#relative_source_pathname' do
+    it "is the path/filename for the page template relative to the source_dir" do
+      page = Overt::Page.new(@site, fixtured_page_template("/subdirectory/subpage.erb"), @layout)
+      assert_equal('subdirectory/subpage.erb', page.relative_source_pathname.to_s)
     end
   end
 end

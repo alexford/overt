@@ -7,3 +7,7 @@ require "overt"
 
 require "minitest/autorun"
 require "minitest/spec"
+
+def fixtured_page_template(file)
+  Pathname.new File.join("test/fixtures/source_dir", file)
+end
