@@ -2,7 +2,7 @@
 
 module Overt
   class Page
-    attr_reader :source_pathname, :site, :context
+    attr_reader :source_pathname, :site, :context, :layout_template
 
     def initialize(site, source_pathname, layout_template)
       @source_pathname = source_pathname
