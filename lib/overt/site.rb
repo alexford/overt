@@ -7,7 +7,6 @@ module Overt
 
     def initialize(source_dir)
       @source_dir = source_dir
-      @layout_template = layout_template
     end
 
     def pages
