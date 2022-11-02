@@ -30,8 +30,8 @@ describe Overt::Page do
         page = Overt::Page.new(@site, fixtured_page_template("page_with_meta_content.erb"), @layout)
         html = page.html
 
-        assert_equal("Title from page template!", page.context.meta[:title])
-        assert_match("<title>Title from page template!</title>", html)
+        assert_equal "Title from page template!", page.context.meta[:title]
+        assert_match "<title>Title from page template!</title>", html
       end
     end
   end
@@ -39,15 +39,14 @@ describe Overt::Page do
   describe '#relative_build_pathname' do
     it "is the path/filename for the page relative to the build_dir" do
       page = Overt::Page.new(@site, fixtured_page_template("/subdirectory/subpage.erb"), @layout)
-      assert_equal('subdirectory/subpage.html', page.relative_build_pathname.to_s)
+      assert_equal 'subdirectory/subpage.html', page.relative_build_pathname.to_s
     end
   end
-
 
   describe '#relative_source_pathname' do
     it "is the path/filename for the page template relative to the source_dir" do
       page = Overt::Page.new(@site, fixtured_page_template("/subdirectory/subpage.erb"), @layout)
-      assert_equal('subdirectory/subpage.erb', page.relative_source_pathname.to_s)
+      assert_equal 'subdirectory/subpage.erb', page.relative_source_pathname.to_s
     end
   end
 end
