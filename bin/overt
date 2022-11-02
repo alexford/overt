@@ -12,13 +12,19 @@ class OvertCommand < Thor
     true
   end
 
+  # TODO: better ways to pass these to the command
+  CONFIG = {
+    source_dir: ENV['OVERT_SOURCE_DIR'] || 'src',
+    build_dir: ENV['OVERT_BUILD_DIR'] || 'public'
+  }.freeze
+
   desc 'clean', 'Remove all files in OVERT_BUILD_DIR'
   method_options quiet: :boolean
   def clean
     console.quiet! if options[:quiet]
     print_command_header('clean')
 
-    do_clean
+    do_clean(CONFIG[:build_dir])
   end
 
   desc 'build', 'Build the site, outputs to OVERT_BUILD_DIR'
@@ -27,14 +33,14 @@ class OvertCommand < Thor
     console.quiet! if options[:quiet]
     print_command_header('build')
 
-    console.line("source_dir: [bold]#{Overt::CONFIG[:source_dir]}[/]")
-    console.line("build_dir: [bold]#{Overt::CONFIG[:build_dir]}[/]")
+    console.line("source_dir: [bold]#{CONFIG[:source_dir]}[/]")
+    console.line("build_dir: [bold]#{CONFIG[:build_dir]}[/]")
     console.line('')
 
-    do_clean if options[:clean]
+    do_clean(CONFIG[:build_dir]) if options[:clean]
 
     start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-    results = Overt.build(console:)
+    results = Overt.build(source_dir: CONFIG[:source_dir], build_dir: CONFIG[:build_dir], console:)
     end_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     elapsed = ((end_time - start_time) * 1000).round(0)
 
@@ -53,11 +59,11 @@ class OvertCommand < Thor
     @console ||= Overt::ConsoleOutput.new
   end
 
-  def do_clean
-    console.line("[bold][red]Cleaning ./#{Pathname.new(Overt::CONFIG[:build_dir])}[/]")
+  def do_clean(build_dir)
+    console.line("[bold][red]Cleaning ./#{Pathname.new(build_dir)}[/]")
     console.line('')
 
-    Overt.clean
+    Overt.clean(build_dir)
   end
 
   def print_command_header(command)
