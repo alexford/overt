@@ -2,17 +2,20 @@
 
 module Overt
   class Page
-    attr_reader :source_pathname
+    attr_reader :source_pathname, :site
 
-    def initialize(site, source_pathname, layout_template, context)
+    def initialize(site, source_pathname, layout_template)
       @source_pathname = source_pathname
       @layout_template = layout_template
-      @context = context
+      @context = Overt::Context.new(self)
       @site = site
     end
 
     def html
-      @html ||= @layout_template.render(@context) { Tilt.new(@source_pathname).render(@context) }
+      @html ||= begin
+        inner_html = template_html
+        @layout_template.render(@context) { inner_html }
+      end
     end
 
     def extension
@@ -29,6 +32,12 @@ module Overt
 
     def relative_source_pathname(source_dir = @site.source_dir)
       @source_pathname.relative_path_from(source_dir)
+    end
+
+    private
+
+    def template_html
+      @template_html ||= Tilt.new(@source_pathname).render(@context)
     end
   end
 end

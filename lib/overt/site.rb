@@ -12,15 +12,11 @@ module Overt
 
     def pages
       @pages ||= page_source_pathnames.map do |source_pathname|
-        Page.new(self, source_pathname, layout_template, render_context)
+        Page.new(self, source_pathname, layout_template)
       end
     end
 
     private
-
-    def render_context
-      @render_context ||= Overt::Context.new(self)
-    end
 
     def layout_template
       @layout_template ||= begin
