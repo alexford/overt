@@ -11,6 +11,9 @@ AllCops:
 Metrics/BlockLength:
   Exclude:
     - "test/**/*"
+    
+Metrics/MethodLength:
+  Max: 15
 
 Style/StringLiterals:
   Enabled: false

@@ -5,11 +5,14 @@ require 'overt/file_helpers'
 require 'overt/context'
 require 'overt/site'
 require 'overt/page'
+require 'overt/page_builder'
 require 'overt/console_output'
 require 'overt/errors'
 require 'tilt'
 require 'pathname'
 require 'fileutils'
+require 'async'
+require 'async/barrier'
 
 module Overt
   def self.clean(build_dir)
@@ -20,20 +23,21 @@ module Overt
 
   def self.build(source_dir:, build_dir:, console:)
     site = Overt::Site.new(source_dir)
+    total = site.pages.length
 
-    site.pages.each_with_index do |page, i|
-      build_pathname = absolute_build_file_path(page.relative_build_pathname, build_dir)
-      console.line "+ writing (#{i + 1}/#{site.pages.length}): #{page.source_pathname} as #{build_pathname}"
-      write_page!(page, build_pathname)
+    Async do
+      site.pages.each_with_index do |page, i|
+        console.line "+ writing (#{i + 1}/#{total}): #{page.source_pathname} as #{page.relative_build_pathname}"
+        build_page(page, build_dir)
+      end
+    end.wait
+
+    site
+  end
+
+  def self.build_page(page, build_dir)
+    Async do
+      Overt::PageBuilder.new(page, build_dir:).build!
     end
-  end
-
-  def self.write_page!(page, output_file)
-    output_file.dirname.mkpath
-    File.write(output_file, page.html)
-  end
-
-  def self.absolute_build_file_path(relative_build_pathname, build_dir)
-    Pathname.new File.join(build_dir, relative_build_pathname)
   end
 end

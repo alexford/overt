@@ -40,12 +40,12 @@ class OvertCommand < Thor
     do_clean(CONFIG[:build_dir]) if options[:clean]
 
     start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-    results = Overt.build(source_dir: CONFIG[:source_dir], build_dir: CONFIG[:build_dir], console:)
+    site = Overt.build(source_dir: CONFIG[:source_dir], build_dir: CONFIG[:build_dir], console:)
     end_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     elapsed = ((end_time - start_time) * 1000).round(0)
 
     console.line('')
-    console.line("[green][bold]Built #{results.length} files[/] [green]in #{elapsed}ms[/]")
+    console.line("[green][bold]Built #{site.pages.length} files[/] [green]in #{elapsed}ms[/]")
   end
 
   desc 'v', 'Prints version number'

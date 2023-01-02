@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.version       = Overt::VERSION
   spec.authors       = ['Alex Ford']
   spec.email         = ['alexford@hey.com']
-  spec.required_ruby_version = '>= 2.4.0'
+  spec.required_ruby_version = '>= 3.0.0'
 
   spec.summary       = 'The static site generator I want to use'
   spec.homepage      = 'https://github.com/alexford/overt'
@@ -35,4 +35,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'kramdown'
   spec.add_dependency 'thor'
   spec.add_dependency 'tilt'
+  spec.add_dependency 'async'
 end

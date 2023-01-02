@@ -13,17 +13,18 @@ describe Overt::Site do
       pages.each { |p| assert_instance_of Overt::Page, p }
 
       page_paths = pages.map { |p| p.relative_source_pathname.to_s }
-      assert_equal page_paths, [
-        "page.erb",
-        "page_needing_context.erb",
-        "page_with_meta_content.erb",
-        "subdirectory/subpage.erb"
-      ]
+
+      assert_equal([
+                     "page.erb",
+                     "page_needing_context.erb",
+                     "page_with_meta_content.erb",
+                     "subdirectory/subpage.erb"
+                   ], page_paths)
     end
 
     it "uses _layout file in source_dir as layout_template for pages" do
       @site.pages.each do |p|
-        assert_equal p.layout_template.file, "test/fixtures/source_dir/_layout.erb"
+        assert_equal("test/fixtures/source_dir/_layout.erb", p.layout_template.file)
       end
     end
 
