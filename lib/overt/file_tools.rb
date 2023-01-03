@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module FileHelpers
+module FileTools
   def build_file_path(name, build_dir)
     File.join(build_dir, name)
   end

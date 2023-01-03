@@ -8,6 +8,16 @@ describe Overt::Page do
     @layout = Tilt::ERBTemplate.new('test/fixtures/source_dir/_layout.erb')
   end
 
+  describe '#context' do
+    it 'is an Overt::Context for this Page' do
+      page = Overt::Page.new(@site, fixtured_page_template("page.erb"), @layout)
+      context = page.context
+
+      assert_instance_of Overt::Context, context
+      assert_equal context.page, page
+    end
+  end
+
   describe '#html' do
     it "returns the rendered template passed as filename, with layout" do
       page = Overt::Page.new(@site, fixtured_page_template("page.erb"), @layout)

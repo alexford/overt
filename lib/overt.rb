@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'overt/version'
-require 'overt/file_helpers'
+require 'overt/file_tools'
 require 'overt/context'
 require 'overt/site'
 require 'overt/page'
@@ -37,7 +37,7 @@ module Overt
 
   def self.build_page(page, build_dir)
     Async do
-      Overt::PageBuilder.new(page, build_dir:).build!
+      PageBuilder.new(page, build_dir:).build!
     end
   end
 end

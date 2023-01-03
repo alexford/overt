@@ -2,7 +2,7 @@
 
 module Overt
   class Context
-    include FileHelpers
+    include FileTools
     attr_accessor :meta
     attr_reader :page
 

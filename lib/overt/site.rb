@@ -2,7 +2,7 @@
 
 module Overt
   class Site
-    include FileHelpers
+    include FileTools
     attr_reader :source_dir
 
     def initialize(source_dir)
