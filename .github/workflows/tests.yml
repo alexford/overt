@@ -28,4 +28,4 @@ jobs:
           bundler-cache: true
       - name: Build dummy site
         run: |
-          cd dummy_site && ../bin/overt/build --clean
+          cd dummy_site && ../bin/overt build --clean
