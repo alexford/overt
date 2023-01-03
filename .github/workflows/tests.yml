@@ -15,3 +15,17 @@ jobs:
       - name: Run tests
         run: |
           bundle exec rake test
+  build-dummy-site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          # Not needed with a .ruby-version file
+          ruby-version: 3.1
+          # runs 'bundle install' and caches installed gems automatically
+          bundler-cache: true
+      - name: Build dummy site
+        run: |
+          cd dummy_site && bundle exec overt build --clean
