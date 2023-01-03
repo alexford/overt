@@ -6,7 +6,7 @@ describe Overt::Context do
   before do
     @site = Overt::Site.new('test/fixtures/source_dir')
     @page = @site.pages[0]
-    @context = @page.context
+    @context = Overt::Context.new(@page)
   end
 
   describe '#site' do
@@ -16,7 +16,6 @@ describe Overt::Context do
   end
 
   describe '#page' do
-    it 'is the Page' do
       assert_equal @context.page, @page
     end
   end
