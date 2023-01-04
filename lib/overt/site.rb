@@ -15,6 +15,12 @@ module Overt
       end
     end
 
+    def static_files
+      @static_files ||= static_file_source_pathnames.map do |source_pathname|
+        StaticFile.new(self, source_pathname)
+      end
+    end
+
     private
 
     def layout_template
@@ -30,7 +36,12 @@ module Overt
     end
 
     def page_source_pathnames
-      @page_source_pathnames ||= Dir[File.join(@source_dir, '**/[!_]*.*')].map { |path| Pathname.new(path) }
+      @page_source_pathnames ||= Dir[File.join(@source_dir, '**/[!_]*.*{erb,md}')].map { |path| Pathname.new(path) }
+    end
+
+    def static_file_source_pathnames
+      @static_file_source_pathnames ||= Dir[File.join(@source_dir, '**/[!_]*.*')]
+        .map { |path| Pathname.new(path) } - page_source_pathnames
     end
   end
 end
