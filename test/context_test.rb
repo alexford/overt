@@ -16,6 +16,7 @@ describe Overt::Context do
   end
 
   describe '#page' do
+    it "is the page given in the initializer"
       assert_equal @context.page, @page
     end
   end
