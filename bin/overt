@@ -8,6 +8,8 @@ require 'formatador'
 require 'pry'
 
 class OvertCommand < Thor
+  class_options quiet: :boolean
+
   def self.exit_on_failure?
     true
   end
@@ -19,7 +21,7 @@ class OvertCommand < Thor
   }.freeze
 
   desc 'clean', 'Remove all files in OVERT_BUILD_DIR'
-  method_options quiet: :boolean
+
   def clean
     console.quiet! if options[:quiet]
     print_command_header('clean')
@@ -28,7 +30,7 @@ class OvertCommand < Thor
   end
 
   desc 'build', 'Build the site, outputs to OVERT_BUILD_DIR'
-  method_options clean: :boolean, quiet: :boolean
+  method_options clean: :boolean
   def build
     console.quiet! if options[:quiet]
     print_command_header('build')
