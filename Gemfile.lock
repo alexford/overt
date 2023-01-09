@@ -7,6 +7,7 @@ PATH
       kramdown
       thor
       tilt
+      zeitwerk
 
 GEM
   remote: https://rubygems.org/
@@ -61,6 +62,7 @@ GEM
     webrick (1.7.0)
     yard (0.9.28)
       webrick (~> 1.7.0)
+    zeitwerk (2.6.6)
 
 PLATFORMS
   arm64-darwin-21
