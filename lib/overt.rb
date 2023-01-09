@@ -1,23 +1,13 @@
 # frozen_string_literal: true
 
-# TODO: zeitwerk or something
-require 'overt/version'
-require 'overt/file_tools'
-require 'overt/context'
-require 'overt/site'
-require 'overt/source_file'
-require 'overt/source_files/page'
-require 'overt/source_files/static_file'
-require 'overt/page_builder'
-require 'overt/console_output'
-require 'overt/processor'
-require 'overt/processors'
-require 'overt/errors'
 require 'tilt'
 require 'pathname'
 require 'fileutils'
 require 'async'
 require 'async/barrier'
+require "zeitwerk"
+loader = Zeitwerk::Loader.for_gem
+loader.setup
 
 module Overt
   def self.clean(build_dir)

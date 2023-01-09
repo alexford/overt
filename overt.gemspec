@@ -36,4 +36,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'thor'
   spec.add_dependency 'tilt'
   spec.add_dependency 'async'
+  spec.add_dependency 'zeitwerk'
 end

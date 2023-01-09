@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Overt
+  class MissingPartialError < StandardError; end
+
   class Context
     include FileTools
     attr_accessor :meta
