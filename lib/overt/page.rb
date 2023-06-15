@@ -24,7 +24,7 @@ module Overt
     private
 
     def template_html
-      @template_html ||= Tilt.new(@source_pathname).render(@context)
+      @template_html ||= Tilt.new(@source_pathname, smartypants: true).render(@context)
     end
   end
 end
