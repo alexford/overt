@@ -19,11 +19,20 @@ describe Overt::Page do
   end
 
   describe '#html' do
-    it "returns the rendered template passed as filename, with layout" do
+    it "returns the rendered ERB template passed as filename, with layout" do
       page = Overt::Page.new(@site, fixtured_page_template("page.erb"), @layout)
 
       assert_equal(
         "<html><title>Layout!</title><body><strong>Hello from the page template!</strong>\n\n2</body></html>\n",
+        page.html
+      )
+    end
+
+    it "returns the rendered Markdown template passed as filename, with layout" do
+      page = Overt::Page.new(@site, fixtured_page_template("page.md"), @layout)
+
+      assert_equal(
+        "<html><title>Layout!</title><body><h1>Hello from the markdown template!</h1>\n</body></html>\n",
         page.html
       )
     end
@@ -44,6 +53,7 @@ describe Overt::Page do
         assert_match "<title>Title from page template!</title>", html
       end
     end
+
   end
 
   describe '#relative_build_pathname' do

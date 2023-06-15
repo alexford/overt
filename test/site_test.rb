@@ -16,6 +16,7 @@ describe Overt::Site do
 
       assert_equal([
                      "page.erb",
+                     "page.md",
                      "page_needing_context.erb",
                      "page_with_meta_content.erb",
                      "subdirectory/subpage.erb"

@@ -33,7 +33,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'yard', '~> 0.9'
 
   spec.add_dependency 'formatador'
-  spec.add_dependency 'kramdown'
+  spec.add_dependency 'redcarpet'
   spec.add_dependency 'thor'
   spec.add_dependency 'tilt'
   spec.add_dependency 'async'
