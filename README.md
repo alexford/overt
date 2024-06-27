@@ -1,3 +1,3 @@
 # Overt
 
-The static site generator I want to use
+The static site generator I want to use. 
